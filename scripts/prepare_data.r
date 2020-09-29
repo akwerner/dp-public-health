@@ -37,7 +37,7 @@ v1a <- v1a %>%
   select(gisjoin, H76001_dp:H76049_dp)
 
 #### Create long dfs for sf, v2, and v1s #### 
-# pivot longer, separate var into multiple parts
+# pivot longer, separate var into multiple parts and add a version value
 long_sf <- sf %>%
   pivot_longer(H76001_sf:H9I049_sf, names_to = "var", values_to = "n") %>%
   separate(var, into = c("var_code", "version"), sep = "_")
