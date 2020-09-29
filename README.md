@@ -121,6 +121,14 @@ _Childhood blood lead_
 - I downloaded the file on 2020-09-29 to make sure I had it
 - also focused on children under the age of 6 (I think it's just 0-5)
 
+#### Maine 
+
+_Childhood blood lead_
+
+- data is grouped from 2009-2013
+- town level counts 
+- age 0, 1, or 2 (up to 36 months of age)
+- downloaded excel file just to have it
 
 
 
