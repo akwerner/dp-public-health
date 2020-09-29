@@ -130,6 +130,14 @@ _Childhood blood lead_
 - age 0, 1, or 2 (up to 36 months of age)
 - downloaded excel file just to have it
 
+#### New Mexico 
+
+_Childhood blood lead_
+
+- data is grouped from 2009-2013
+- county level counts 
+- can specify which ages to include
+
 
 
 
