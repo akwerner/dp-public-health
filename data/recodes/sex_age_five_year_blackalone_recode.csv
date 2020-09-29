@@ -1,0 +1,47 @@
+var,age_grp,age_label,sex,race
+H9B003,0,Under 5 years,0,2
+H9B004,1,5 to 9 years,0,2
+H9B005,2,10 to 14 years,0,2
+H9B006,3,15 to 17 years,0,2
+H9B007,3,18 and 19 years,0,2
+H9B008,4,20 years,0,2
+H9B009,4,21 years,0,2
+H9B010,4,22 to 24 years,0,2
+H9B011,5,25 to 29 years,0,2
+H9B012,6,30 to 34 years,0,2
+H9B013,7,35 to 39 years,0,2
+H9B014,8,40 to 44 years,0,2
+H9B015,9,45 to 49 years,0,2
+H9B016,10,50 to 54 years,0,2
+H9B017,11,55 to 59 years,0,2
+H9B018,12,60 and 61 years,0,2
+H9B019,12,62 to 64 years,0,2
+H9B020,13,65 and 66 years,0,2
+H9B021,13,67 to 69 years,0,2
+H9B022,14,70 to 74 years,0,2
+H9B023,15,75 to 79 years,0,2
+H9B024,16,80 to 84 years,0,2
+H9B025,17,85 years and over,0,2
+H9B027,0,Under 5 years,1,2
+H9B028,1,5 to 9 years,1,2
+H9B029,2,10 to 14 years,1,2
+H9B030,3,15 to 17 years,1,2
+H9B031,3,18 and 19 years,1,2
+H9B032,4,20 years,1,2
+H9B033,4,21 years,1,2
+H9B034,4,22 to 24 years,1,2
+H9B035,5,25 to 29 years,1,2
+H9B036,6,30 to 34 years,1,2
+H9B037,7,35 to 39 years,1,2
+H9B038,8,40 to 44 years,1,2
+H9B039,9,45 to 49 years,1,2
+H9B040,10,50 to 54 years,1,2
+H9B041,11,55 to 59 years,1,2
+H9B042,12,60 and 61 years,1,2
+H9B043,12,62 to 64 years,1,2
+H9B044,13,65 and 66 years,1,2
+H9B045,13,67 to 69 years,1,2
+H9B046,14,70 to 74 years,1,2
+H9B047,15,75 to 79 years,1,2
+H9B048,16,80 to 84 years,1,2
+H9B049,17,85 years and over,1,2

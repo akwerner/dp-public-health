@@ -1,0 +1,47 @@
+var,age_grp,age_label,sex,race
+H76003,0,Under 5 years,0,0
+H76004,1,5 to 9 years,0,0
+H76005,2,10 to 14 years,0,0
+H76006,3,15 to 17 years,0,0
+H76007,3,18 and 19 years,0,0
+H76008,4,20 years,0,0
+H76009,4,21 years,0,0
+H76010,4,22 to 24 years,0,0
+H76011,5,25 to 29 years,0,0
+H76012,6,30 to 34 years,0,0
+H76013,7,35 to 39 years,0,0
+H76014,8,40 to 44 years,0,0
+H76015,9,45 to 49 years,0,0
+H76016,10,50 to 54 years,0,0
+H76017,11,55 to 59 years,0,0
+H76018,12,60 and 61 years,0,0
+H76019,12,62 to 64 years,0,0
+H76020,13,65 and 66 years,0,0
+H76021,13,67 to 69 years,0,0
+H76022,14,70 to 74 years,0,0
+H76023,15,75 to 79 years,0,0
+H76024,16,80 to 84 years,0,0
+H76025,17,85 years and over,0,0
+H76027,0,Under 5 years,1,0
+H76028,1,5 to 9 years,1,0
+H76029,2,10 to 14 years,1,0
+H76030,3,15 to 17 years,1,0
+H76031,3,18 and 19 years,1,0
+H76032,4,20 years,1,0
+H76033,4,21 years,1,0
+H76034,4,22 to 24 years,1,0
+H76035,5,25 to 29 years,1,0
+H76036,6,30 to 34 years,1,0
+H76037,7,35 to 39 years,1,0
+H76038,8,40 to 44 years,1,0
+H76039,9,45 to 49 years,1,0
+H76040,10,50 to 54 years,1,0
+H76041,11,55 to 59 years,1,0
+H76042,12,60 and 61 years,1,0
+H76043,12,62 to 64 years,1,0
+H76044,13,65 and 66 years,1,0
+H76045,13,67 to 69 years,1,0
+H76046,14,70 to 74 years,1,0
+H76047,15,75 to 79 years,1,0
+H76048,16,80 to 84 years,1,0
+H76049,17,85 years and over,1,0
