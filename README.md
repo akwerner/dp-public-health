@@ -27,7 +27,7 @@ The prepare_data.r script does four things:
 3. Applies factors to the sex, age_grp, and race variables 
 4. Creates a final data frame `df_sar` through a `group_by(sex, age_grp, race, version, gisjoin)` and a `summarise` (which sums the counts for various age categories)
 
-Step 3 is required because the original age categories in the data aren't in 5-year bins. Step 3 creates counts for those 5-year bins.
+Step 3 is required because the original age categories in the data aren't in 5-year bins. Step 3 creates counts for those 5-year bins through a summarise.
 
 The final data frame `df_sar` has 2,435,076 records of 6 variables.
 
