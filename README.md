@@ -25,9 +25,25 @@ The prepare_data.r script does four things:
 1. Converts the wide data frames to a single long data frame (df) using pivot_longer
 2. Joins the recodes to the long data frame
 3. Applies factors to the sex, age_grp, and race variables 
-4. Creates a final data frame (df_sar) through a group_by(sex, age_grp, race, version, gisjoin) and a summarise (which sums the counts for various age categories)
+4. Creates a final data frame `df_sar` through a `group_by(sex, age_grp, race, version, gisjoin)` and a summarise (which sums the counts for various age categories)
 
 Step 3 is required because the original age categories in the data aren't in 5-year bins. Step 3 creates counts for those 5-year bins.
 
-The final data frame (df_sar) has 2,435,076 records of 6 variables.
+The final data frame `df_sar` has 2,435,076 records of 6 variables.
+
+## Numerator data
+When we choose our numerator data, we will probably have to modify its county FIPS codes to match the `gisjoin` value in the df_sar df. The `gisjoin` value is comprised of the following:
+
+- "G" - assures that the value will be a string
+- two digit state FIPS code
+- "0" - padding for historic states/territories that no longer exist 
+- three digit county FIPS code
+- "0" - padding for historic counties that no longer exist 
+
+I typically use the following mutate statement to construct a gisjoin:
+
+` mutate(gisjoin = paste0("G", substr(fips, 1, 2), "0", substr(fips, 3, 5), "0"))`
+
+This snippet assumes you have a variable called `fips`, with the first two digits representing the state and the last three digits representing the county. 
+
 
