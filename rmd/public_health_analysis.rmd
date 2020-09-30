@@ -51,6 +51,31 @@ Constraints are the set of rules that the data produced by the disclosure avoida
 
 Invariants and constraints are not required by the disclosure avoidance system; instead, they are imposed to satisfy the expectations of policy makers and data users. The state-level total population invariant was established to avoid debates and litigation over Congressional reapportionment. The non-negativity and integer constraints are imposed to avoid negative counts or non-integer values for geographic units, since we only count whole persons in the census. These constraints avoid such illogical values. Consistency constraints guarantee that if you sum the male and female totals from any published data table, you will obtain the same sum.
 
+### Disclosure avoidance system
+
+The disclosure avoidance system that generated the DDP and v20200527 consists of three steps: generating counts from the CEF, injecting noise, and post-processing the satisfy invariants and constraints. The first two steps were the same for both datasets, but the post-processing step differed substantially.
+
+#### Generating Counts
+
+The first step produces counts from the CEF. The disclosure avoidance system consumes the CEF, the queries and geographic levels and creates a set of cross-tabulations (or histograms) - one for each combination of query and geographic level. The cells in each cross-tabulation contain the counts of a particular set of categories (e.g., 0-4 year old males) for a given geographic unit. The number of cells in these cross-tabulations may be massive, particularly at the census block level, and the counts in the cells may be small or even zero.
+
+#### Noise Injection
+
+The second step injects noise into the counts generated in the prior step. These "noisy counts" are, by definition, differentially private, but they may not satisfy invariants or constraints. The noise injection step is implemented with three sub-steps.
+
+##### Compute $\epsilon$ for Each Geographic Level * Query Combination
+
+We compute $\epsilon$ for each combination by multiplying the PLB, geographic level fraction, and query fraction (\#eq:epsilon_equation).
+
+\begin{epsilon_equation}
+\epsilon = PLB * GeogLevel_{fraction} * Query_{fraction}
+\end{epsilon_equation}
+
+For the DDP and v20200527, the PLB was 4.0, the geographic level fractions are listed in XXXX, and the query fractions are shown in the XXXX column of Table X.
+
+##### Compute the Scale Parameter for the Statistical Distribution
+
+
 
 
 
