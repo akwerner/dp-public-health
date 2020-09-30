@@ -1,0 +1,85 @@
+---
+title: "Public Health Analysis using DP Data"
+author: "David Van Riper"
+date: "9/29/2020"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+## Introduction 
+
+## Differential Privacy and the Decennial Census 
+
+In August 2018, the US Census Bureau announced it would adopt a new method to protect respondent confidentiality in the 2020 Decennial Census of Population and Housing (Abowd 2018). Instead of using techniques such as cell suppression or household swapping (footnote McKenna's paper), the Bureau will use a technique based on differential privacy to protect confidentiality. ADD IN QUOTE FROM GARFINKEL ABOUT SEA CHANGE IN DATA PUBLICATION.
+
+Why did the Bureau decide to change its disclosure avoidance system? Bureau scientists executed a reconstruction and reidentification attack on the publicly available tabulations from the 2010 decennial census. Using the database reconstruction theorem, the Bureau reconstructed 308,745,538 person records from census tract and block data. 
+
+
+
+### Policy Decisions
+
+Disclosure avoidance algorithms require parameters that control the amount of noise, suppression, or swapping applied to the input data. Values for these parameters impact the quality and accuracy of the output data, and it is critical that data users understand both the significance of the parameters and their possible range of values. This section discusses the Top Down Algorithm's parameters and the values used to generate the DDP and the v20200527 datasets. 
+
+#### Global Privacy Loss Budget
+
+The global privacy loss budget ($\epsilon$) controls the trade-off between the privacy afforded to Census respondents and the accuracy of the published data. Values for $\epsilon$ range from 0 to infinity, with 0 representing perfect privacy/no accuracy and infinity representing no privacy/perfect accuracy. After establishing the global PLB, it is then allocated to geographic levels and queries. Geographic levels or queries that receive larger fractions will be more accurate. 
+
+For both the DDP and v20200527 datasets, the Census Bureau's Data Stewardship Executive Policy Committee established a PLB of 4.0 for person-based tables.^[The DDP included housing unit and household data. A PLB of 2.0 was provided housing unit-based queries. The v20200527 only includes person data.] The PLB was then allocated to combinations of geographic levels and queries, and those allocations ultimately control the magnitude of the noise injected into counts.  
+
+#### Geographic Levels
+
+If we think of the cross-tabulations into which noise is injected as a set of rows and columns, the geographic levels define the rows. Each row in a cross-tabulation is a geographic unit within a geographic level (e.g., Autauga County, Alabama, is a geographic unit in the County geographic level). For both the DDP and v20200527 datasets, seven geographic levels in the Census Bureau's hierarchy received direct allocations of the PLB. The nation and state received 20% each, and the remaining five levels (county, census tract group^[The census tract group is not a standard unit in the Census Bureau's geographic hierarchy. It was created specifically for the disclosure avoidance system to control the number of child units for each county], census tract, block group, and block) received 12% each. Geographic levels that receive no direct PLB allocation accumulate accuracy from the units that comprise them.
+
+#### Queries 
+
+If geographic levels define the rows of a cross-tabulation, then queries define the columns. Queries are essentially combinations of demographic variables, and the PLB is allocated to these queries. The disclosure avoidance system defined two types of queries. "Detailed" queries consist of all unique combinations of variables, and "DP" queries are specific combinations of variables. The "detailed" queries allow the Bureau to reconstruct the underlying microdata, and the "DP" queries allow policy makers to target specific statistics that will be more accurate in the published data. 
+
+Queries defined in the disclosure avoidance system do not have a one-to-one relationshiop with tables published in the DDP or v20200527 datasets. The queries are used in the noise injection and optimization processes, and the published tables are created from microdata created by those processes. Categories in the published tables can and will differ from those used in the queries. 
+
+The Census Bureau designed seven and five queries to support the production of person tables in the DDP and v20200527, respectively, and these queries received direct PLB allocations (Table X). Query descriptions and PLB allocations are shown in Table X. The _voting age * Hispanic * race * citizenship_ query, which is used for legislative redistricting, received the largest allocation (50%) in the DDP, and the _total population_ query received the largest allocation (30%) in v20200527. 
+
+
+
+
+
+Geographic allocation for demonstration datasets
+- add a table with allocations (same for both datasets)
+Query allocation for demonstration datasets
+- add a table with allocations (different for each dataset)
+Scale values and standard deviations 
+- add a table with scale (beta) values and standard deviations sqrt(2 beta^2)
+
+## Data
+
+Describe public health data (sources, unit of geography, age/race/sex)
+
+Describe the differentially private census data (unit of geography, demographic categories used)
+
+## Methods
+
+## Results
+
+## Discussion
+
+## R Markdown
+
+This is an R Markdown document. Markdown is a simple formatting syntax for authoring HTML, PDF, and MS Word documents. For more details on using R Markdown see <http://rmarkdown.rstudio.com>.
+
+When you click the **Knit** button a document will be generated that includes both content as well as the output of any embedded R code chunks within the document. You can embed an R code chunk like this:
+
+```{r cars}
+summary(cars)
+```
+
+## Including Plots
+
+You can also embed plots, for example:
+
+```{r pressure, echo=FALSE}
+plot(pressure)
+```
+
+Note that the `echo = FALSE` parameter was added to the code chunk to prevent printing of the R code that generated the plot.
