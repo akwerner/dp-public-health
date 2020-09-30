@@ -41,6 +41,16 @@ Queries defined in the disclosure avoidance system do not have a one-to-one rela
 
 The Census Bureau designed seven and five queries to support the production of person tables in the DDP and v20200527, respectively, and these queries received direct PLB allocations (Table X). Query descriptions and PLB allocations are shown in Table X. The _voting age * Hispanic * race * citizenship_ query, which is used for legislative redistricting, received the largest allocation (50%) in the DDP, and the _total population_ query received the largest allocation (30%) in v20200527. 
 
+#### Invariants and Constraints
+
+Invariants and constraints play key roles in the disclosure avoidance system, particularly in the post-processing routines applied to the noisy counts. Invariants are counts computed directly from the Census Edited File (CEF) and are not subject to noise injection. Constraints control the types and ranges of values in the published statistics. 
+
+The Bureau has not yet selected invariants for the 2020 Decennial Census, but it did set four invariants for the DDP and v20200527 datasets. Total population is invariant at the state-level, and total housing units, total group quarters facilities, and total group quarters facilities by type are invariant at the census block-level. These same four statistics were invariant at the _census block-level_ in the 2010 Decennial Census. Additionally, voting age population and occupied housing units (i.e., households) were invariant at the census block-level in 2010. 
+
+Constraints are the set of rules that the data produced by the disclosure avoidance system must follow. For both datasets we analyzed, constraints included non-negativity, integer, and hierarchical consistency. The non-negativity and integer constraints require that all published statistics to positive integer values. The hierarchical consistency constraint imposes consistency among geographic and category hierarchies. For geographic hierarchies, counts for child units must sum to the counts of their parent unit. For category hierarchies, counts child categories must sum to the counts of their parent category. 
+
+Invariants and constraints are not required by the disclosure avoidance system; instead, they are imposed to satisfy the expectations of policy makers and data users. The state-level total population invariant was established to avoid debates and litigation over Congressional reapportionment. The non-negativity and integer constraints are imposed to avoid negative counts or non-integer values for geographic units, since we only count whole persons in the census. These constraints avoid such illogical values. Consistency constraints guarantee that if you sum the male and female totals from any published data table, you will obtain the same sum.
+
 
 
 
