@@ -97,7 +97,11 @@ Different post-processing routines were used to generate the DDP and v20200527 d
 
 For the DDP, the algorithm minimized the differences between the noisy detailed histogram and the noisy DP queries, along satisfying invariants, non-negativity, and consistency, in a single optimization step. ISSUES WITH THIS - this is what caused lots of issues identified at CNStat, etc...?
 
+To ameliorate inaccuracies in the DDP, the Census Bureau redesigned the post-processing routine, creating what is now called the "multipass" routine. Instead of optimizing all cells in the detailed and DP queries at one time for a given geographic level, the routine runs multiple optimization steps for each geographic level. In the first pass, the routine optimizes the differences between the noisy detailed histogram and the total population and household/group quarters counts. In the second pass, the routine optimizes differences between the noisy detailed histogram and the _voting age * Hispanic * race_ query, controlling the counts to the results of the first pass. In other words, if we sum the optimized counts from the _voting age * Hispanic * race_ categories, the result will be close to the optimized total population count generated in the first pass. 
 
+The third pass optimizes differences between the noisy detailed histogram and the _age * sex * Hispanic * race_ query, controlling the counts to the results of the second pass. 
+
+These passes are run for each geographic level in the hierarchy. All passes are run for the nation level first, then the state level, and down the hierarchy until they are run for the block level. Essentially, the multipass routine is top-down along two dimensions---the geograhphic hierarchy and the query hierarchy. 
 
 
 
