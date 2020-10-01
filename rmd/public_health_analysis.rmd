@@ -13,7 +13,7 @@ knitr::opts_chunk$set(echo = TRUE)
 
 ## Differential Privacy and the Decennial Census 
 
-In August 2018, the US Census Bureau announced it would adopt a new method to protect respondent confidentiality in the 2020 Decennial Census of Population and Housing (Abowd 2018). Instead of using techniques such as cell suppression or household swapping (footnote McKenna's paper), the Bureau will use a technique based on differential privacy to protect confidentiality. ADD IN QUOTE FROM GARFINKEL ABOUT SEA CHANGE IN DATA PUBLICATION.
+In August 2018, the US Census Bureau announced it would adopt a new method to protect respondent confidentiality in the 2020 Decennial Census of Population and Housing (Abowd 2018). Instead of using techniques such as cell suppression or household swapping^[Readers interested in learning about the disclosure avoidance techniques used by the Census Bureau are directed to McKenna (cite her paper)], the Bureau will use a technique based on differential privacy to protect confidentiality. ADD IN QUOTE FROM GARFINKEL ABOUT SEA CHANGE IN DATA PUBLICATION.
 
 Why did the Bureau decide to change its disclosure avoidance system? Bureau scientists executed a reconstruction and reidentification attack on the publicly available tabulations from the 2010 decennial census. Using the database reconstruction theorem, the Bureau reconstructed 308,745,538 person records from census tract and block data. 
 
@@ -37,7 +37,7 @@ If we think of the cross-tabulations into which noise is injected as a set of ro
 
 If geographic levels define the rows of a cross-tabulation, then queries define the columns. Queries are essentially combinations of demographic variables, and the PLB is allocated to these queries. The disclosure avoidance system defined two types of queries. "Detailed" queries consist of all unique combinations of variables, and "DP" queries are specific combinations of variables. The "detailed" queries allow the Bureau to reconstruct the underlying microdata, and the "DP" queries allow policy makers to target specific statistics that will be more accurate in the published data. 
 
-Queries defined in the disclosure avoidance system do not have a one-to-one relationshiop with tables published in the DDP or v20200527 datasets. The queries are used in the noise injection and optimization processes, and the published tables are created from microdata created by those processes. Categories in the published tables can and will differ from those used in the queries. 
+Queries defined in the disclosure avoidance system do not have a one-to-one relationship with tables published in the DDP or v20200527 datasets. The queries are used in the noise injection and optimization processes, and the published tables are created from microdata created by those processes. Categories in the published tables can and will differ from those used in the queries. 
 
 The Census Bureau designed seven and five queries to support the production of person tables in the DDP and v20200527, respectively, and these queries received direct PLB allocations (Table X). Query descriptions and PLB allocations are shown in Table X. The _voting age * Hispanic * race * citizenship_ query, which is used for legislative redistricting, received the largest allocation (50%) in the DDP, and the _total population_ query received the largest allocation (30%) in v20200527. 
 
@@ -95,19 +95,13 @@ The output of the prior step is a set of noisy, differentially private, histogra
 
 Different post-processing routines were used to generate the DDP and v20200527 datasets. Both routines follow the same general structure in that they start at the national level and work down the geographic hierarchy, successively generating data for finer geographic levels. However, the optimization step for each geographic level differs. 
 
-For the DDP, the algorithm minimized the differences between the noisy detailed histogram and the noisy DP queries, along satisfying invariants, non-negativity, and consistency, in a single optimization step. ISSUES WITH THIS - this is what caused lots of issues identified at CNStat, etc...?
+For the DDP, the algorithm minimized the differences between the noisy detailed histogram and the noisy DP queries, along with satisfying invariants, non-negativity, and consistency, in a single optimization step (Figure X, Panel Z). The algorithm first optimized the nation-level queries, and then moved down the geographic hierarchy (Figure X, Panel Y) until it produced the optimized block-level queries. Those queries were then converted to microdata that were tabulated for publication. ISSUES WITH THIS - this is what caused lots of issues identified at CNStat, etc...?
 
-To ameliorate inaccuracies in the DDP, the Census Bureau redesigned the post-processing routine, creating what is now called the "multipass" routine. Instead of optimizing all cells in the detailed and DP queries at one time for a given geographic level, the routine runs multiple optimization steps for each geographic level. In the first pass, the routine optimizes the differences between the noisy detailed histogram and the total population and household/group quarters counts. In the second pass, the routine optimizes differences between the noisy detailed histogram and the _voting age * Hispanic * race_ query, controlling the counts to the results of the first pass. In other words, if we sum the optimized counts from the _voting age * Hispanic * race_ categories, the result will be close to the optimized total population count generated in the first pass. 
+To ameliorate inaccuracies in the DDP, the Census Bureau redesigned the post-processing routine, creating what is now called the _multipass_ routine. Instead of optimizing all cells in the detailed and DP queries at one time for a given geographic level, the routine runs multiple optimization steps for each geographic level. In the first pass, the routine optimizes the differences between the noisy detailed histogram and the total population and household/group quarters counts. In the second pass, the routine optimizes differences between the noisy detailed histogram and the _voting age * Hispanic * race_ query, controlling the counts to the results of the first pass (Figure Y, Panel Z). In other words, if we sum the optimized counts from the _voting age * Hispanic * race_ categories, the result will be close to the optimized total population count generated in the first pass. 
 
 The third pass optimizes differences between the noisy detailed histogram and the _age * sex * Hispanic * race_ query, controlling the counts to the results of the second pass. 
 
-These passes are run for each geographic level in the geographic hierarchy. All passes are run for the nation level first, then the state level, and down the  hierarchy until they are run for the block level. Essentially, the multipass routine is top-down along two dimensions---the geographic hierarchy and the query hierarchy. By adding the query hierarchy and the extra optimization steps for queries, the Bureau may prioritize particular use cases. For the v20200527 dataset, the top priority was total population counts and counts of persons in households or group quarters, and the second and third priorities were redistricting and population estimates, respectively. 
-
-
-
-
-
-
+These passes are run for each geographic level in the geographic hierarchy (Figure Y, Panel Y). All passes are run for the nation level first, then the state level, and down the hierarchy until they are run for the block level. Essentially, the multipass routine is top-down along two dimensions---the geographic hierarchy and the query hierarchy. By adding the query hierarchy and the extra optimization steps for queries, the Bureau may prioritize particular use cases. For the v20200527 dataset, the top priority was total population counts and counts of persons in households or group quarters, and the second and third priorities were counts that support redistricting and population estimates, respectively. 
 
 ## Data
 
