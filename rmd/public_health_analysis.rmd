@@ -80,10 +80,12 @@ $\epsilon$ is the geographic level * query value computed in the previous sub-st
 
 Scale parameters for the DDP and v20200527 are shown in Table X. Nation and state scale parameters are the same for each query because those geographic levels receive the same fractional allocation. County, census tract group, census tract, census block group, and census block scale parameters are the same because those geographic levels receive the same fractional allocations.
 
-We can compute the standard deviation [NOTE: should I compute std dev, variance or IQR for the paper?] for each distribution as follows:
+We can compute the standard deviation for each distribution as follows:
 
 $$\sigma = \sqrt{2 * s^2}$$
-Larger scale parameters represent distributions with higher variances, which yield potentially larger noise values. 
+For the Laplace distribution, approximately 75% of the random values will fall within 1 standard deviation of the mean as compared to 68% of random values in the normal distribution. But, the tails of the Laplace distribution are thicker than the normal distribution, increasing the probability of drawing a random value that is 3 or 4 times the standard deviation.  
+
+<!-- Larger scale parameters represent distributions with higher variances, which yield potentially larger noise values.  -->
 
 ##### Generate and Inject Random Noise in each Cell
 
@@ -91,7 +93,7 @@ For each cell in a particular combination of a geographic level * query, a rando
 
 #### Post-processing
 
-The output of the prior step is a set of noisy, differentially private, histograms---one for each _geographicy level * query_ combination. These histograms are integer-valued but may not satisfy invariants and constraints. Additionally, the set of queries and geographic levels used for noise injection does not match the set of cross-tabulations and geographic levels desired for publication. In order to produce the final dataset that satisfy invariants and constraints, the Census Bureau conducts a series of optimization steps that ultimately create microdata (each record represents a person), which can then be tabulated for publication.
+The output of the prior step is a set of noisy, differentially private, histograms---one for each _geographic level * query_ combination. These histograms are integer-valued but may not satisfy invariants and constraints. Additionally, the set of queries and geographic levels used for noise injection does not match the set of cross-tabulations and geographic levels desired for publication. In order to produce the final dataset that satisfy invariants and constraints, the Census Bureau conducts a series of optimization steps that ultimately create microdata (each record represents a person), which can then be tabulated for publication.
 
 Different post-processing routines were used to generate the DDP and v20200527 datasets. Both routines follow the same general structure in that they start at the national level and work down the geographic hierarchy, successively generating data for finer geographic levels. However, the optimization step for each geographic level differs. 
 
