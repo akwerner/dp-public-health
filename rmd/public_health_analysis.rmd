@@ -101,7 +101,7 @@ To ameliorate inaccuracies in the DDP, the Census Bureau redesigned the post-pro
 
 The third pass optimizes differences between the noisy detailed histogram and the _age * sex * Hispanic * race_ query, controlling the counts to the results of the second pass. 
 
-These passes are run for each geographic level in the hierarchy. All passes are run for the nation level first, then the state level, and down the hierarchy until they are run for the block level. Essentially, the multipass routine is top-down along two dimensions---the geograhphic hierarchy and the query hierarchy. 
+These passes are run for each geographic level in the geographic hierarchy. All passes are run for the nation level first, then the state level, and down the  hierarchy until they are run for the block level. Essentially, the multipass routine is top-down along two dimensions---the geographic hierarchy and the query hierarchy. By adding the query hierarchy and the extra optimization steps for queries, the Bureau may prioritize particular use cases. For the v20200527 dataset, the top priority was total population counts and counts of persons in households or group quarters, and the second and third priorities were redistricting and population estimates, respectively. 
 
 
 
