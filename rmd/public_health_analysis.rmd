@@ -11,11 +11,15 @@ knitr::opts_chunk$set(echo = TRUE)
 
 ## Introduction 
 
+Public health scientists and practitioners rely on decennial census data on the sex, age, race, and Hispanic ethnicity for states, counties, cities, and neighborhoods to track a wide range of health outcomes. Decennial data provide crucial denominators when XXXXX. 
+
 ## Differential Privacy and the Decennial Census 
 
 In August 2018, the US Census Bureau announced it would adopt a new method to protect respondent confidentiality in the 2020 Decennial Census of Population and Housing (Abowd 2018). Instead of using techniques such as cell suppression or household swapping^[Readers interested in learning about the disclosure avoidance techniques used by the Census Bureau are directed to McKenna (cite her paper)], the Bureau will use a technique based on differential privacy to protect confidentiality. ADD IN QUOTE FROM GARFINKEL ABOUT SEA CHANGE IN DATA PUBLICATION.
 
-Why did the Bureau decide to change its disclosure avoidance system? Bureau scientists executed a reconstruction and reidentification attack on the publicly available tabulations from the 2010 decennial census. Using the database reconstruction theorem, the Bureau reconstructed 308,745,538 person records from census tract and block data. 
+Why did the Bureau decide to change its disclosure avoidance system? Bureau scientists executed a reconstruction and reidentification attack on the publicly available tabulations from the 2010 decennial census. Using the database reconstruction theorem (CITE Dinur and Nissim), the Bureau reconstructed 308,745,538 person records from census tract and block data. Each record included the age, sex, race, Hispanic ethnicity, and census block identifier. The Bureau then linked the reconstructed records with a commercial database (which included names) using age, sex, and block identifier. Approximately forty-five percent (139 million) of the reconstructed records matched a record in the commercial database. Finally, the Bureau attempted to link these 139 million records to the confidential microdata on all attributes---census block identifier, name, age, sex, race, and Hispanic ethnicity. For 52 million records (seventeen percent of the US resident population in 2010), the Bureau confirmed that the two records referred to the same person.
+
+Results of this attack pushed the Bureau to develop and implement new disclosure avoidance techniques that XXXXX. 
 
 
 
@@ -83,7 +87,7 @@ Scale parameters for the DDP and v20200527 are shown in Table X. Nation and stat
 We can compute the standard deviation for each distribution as follows:
 
 $$\sigma = \sqrt{2 * s^2}$$
-For the Laplace distribution, approximately 75% of the random values will fall within 1 standard deviation of the mean as compared to 68% of random values in the normal distribution. But, the tails of the Laplace distribution are thicker than the normal distribution, increasing the probability of drawing a random value that is 3 or 4 times the standard deviation.  
+For the Laplace distribution, approximately 75% of the random values will fall within 1 standard deviation of the mean as compared to 68% of random values in the normal distribution. But, the tails of the Laplace distribution are thicker than the normal distribution, increasing the probability of drawing a random value that is 3 or 4 times the standard deviation. (SHOULD I ADD PERCENTAGES TO SHOW THIS).   
 
 <!-- Larger scale parameters represent distributions with higher variances, which yield potentially larger noise values.  -->
 
@@ -99,19 +103,21 @@ Different post-processing routines were used to generate the DDP and v20200527 d
 
 For the DDP, the algorithm minimized the differences between the noisy detailed histogram and the noisy DP queries, along with satisfying invariants, non-negativity, and consistency, in a single optimization step (Figure X, Panel Z). The algorithm first optimized the nation-level queries, and then moved down the geographic hierarchy (Figure X, Panel Y) until it produced the optimized block-level queries. Those queries were then converted to microdata that were tabulated for publication. ISSUES WITH THIS - this is what caused lots of issues identified at CNStat, etc...?
 
-To ameliorate inaccuracies in the DDP, the Census Bureau redesigned the post-processing routine, creating what is now called the _multipass_ routine. Instead of optimizing all cells in the detailed and DP queries at one time for a given geographic level, the routine runs multiple optimization steps for each geographic level. In the first pass, the routine optimizes the differences between the noisy detailed histogram and the total population and household/group quarters counts. In the second pass, the routine optimizes differences between the noisy detailed histogram and the _voting age * Hispanic * race_ query, controlling the counts to the results of the first pass (Figure Y, Panel Z). In other words, if we sum the optimized counts from the _voting age * Hispanic * race_ categories, the result will be close to the optimized total population count generated in the first pass. 
+To ameliorate inaccuracies in the DDP, the Census Bureau redesigned the post-processing routine, creating what is now called the _multipass_ routine. This new routine was used on the v20200527 dataset. Instead of optimizing all cells in the detailed and DP queries at one time for a given geographic level, the routine runs multiple optimization steps for each geographic level. In the first pass, the routine optimizes the differences between the noisy detailed histogram and the total population and household/group quarters counts. In the second pass, the routine optimizes differences between the noisy detailed histogram and the _voting age * Hispanic * race_ query, controlling the counts to the results of the first pass (Figure Y, Panel Z). In other words, if we sum the optimized counts from the _voting age * Hispanic * race_ categories, the result will be close to the optimized total population count generated in the first pass. 
 
 The third pass optimizes differences between the noisy detailed histogram and the _age * sex * Hispanic * race_ query, controlling the counts to the results of the second pass. 
 
-These passes are run for each geographic level in the geographic hierarchy (Figure Y, Panel Y). All passes are run for the nation level first, then the state level, and down the hierarchy until they are run for the block level. Essentially, the multipass routine is top-down along two dimensions---the geographic hierarchy and the query hierarchy. By adding the query hierarchy and the extra optimization steps for queries, the Bureau may prioritize particular use cases. For the v20200527 dataset, the top priority was total population counts and counts of persons in households or group quarters, and the second and third priorities were counts that support redistricting and population estimates, respectively. 
+These passes are run for each geographic level in the geographic hierarchy (Figure Y, Panel Y). All passes are run for the nation level first, then the state level, and down the hierarchy until they are run for the block level. Essentially, the multipass routine is top-down along two dimensions---the geographic hierarchy and the query hierarchy. By adding the query hierarchy and the extra optimization steps for queries, the Bureau may prioritize particular use cases. For the v20200527 dataset, the top query priority was total population counts and counts of persons in households or group quarters, and the second and third query priorities were counts that support redistricting and population estimates, respectively. 
 
 ## Data
 
 Describe public health data (sources, unit of geography, age/race/sex)
 
-Describe the differentially private census data (unit of geography, demographic categories used)
+Describe the differentially private/2010 Summary File 1 census data (unit of geography, demographic categories used)
 
 ## Methods
+
+What are we going to compute using multiple denominators?
 
 ## Results
 
