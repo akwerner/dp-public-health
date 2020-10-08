@@ -23,7 +23,7 @@ In August 2018, the US Census Bureau announced it would adopt a new method to pr
 
 Why did the Bureau decide to change its disclosure avoidance system? Bureau scientists executed a reconstruction and reidentification attack on the publicly available tabulations from the 2010 decennial census. Using the database reconstruction theorem (CITE Dinur and Nissim), the Bureau reconstructed 308,745,538 person records from census tract and block data. Each record included the age, sex, race, Hispanic ethnicity, and census block identifier. The Bureau then linked the reconstructed records with a commercial database (which included names) using age, sex, and block identifier. Approximately forty-five percent (139 million) of the reconstructed records matched a record in the commercial database. Finally, the Bureau attempted to link these 139 million records to the confidential microdata on all attributes---census block identifier, name, age, sex, race, and Hispanic ethnicity. For 52 million records (seventeen percent of the US resident population in 2010), the Bureau confirmed that the two records referred to the same person.
 
-Results of this attack pushed the Bureau to develop and implement new disclosure avoidance techniques that XXXXX. 
+Results of this attack pushed the Bureau to develop and implement a new disclosure avoidance technique that provide stronger confidentiality protections than prior methods. The new technique is based on differential privacy, which provides a mathematically provable lower bound on the amount of private information leaked when statistics are published (CITE Dwork et al).           
 
 
 
@@ -114,6 +114,8 @@ The third pass optimizes differences between the noisy detailed histogram and th
 These passes are run for each geographic level in the geographic hierarchy (Figure Y, Panel Y). All passes are run for the nation level first, then the state level, and down the hierarchy until they are run for the block level. Essentially, the multipass routine is top-down along two dimensions---the geographic hierarchy and the query hierarchy. By adding the query hierarchy and the extra optimization steps for queries, the Bureau may prioritize particular use cases. For the v20200527 dataset, the top query priority was total population counts and counts of persons in households or group quarters, and the second and third query priorities were counts that support redistricting and population estimates, respectively. 
 
 ## Data
+
+
 
 Describe public health data (sources, unit of geography, age/race/sex)
 
