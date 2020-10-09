@@ -17,8 +17,8 @@ recode_path <- "data/recodes/"
 # wide_dp1_050.csv contains the Oct 2019 DP data for P12. Sex by Age  
 # ddp_county_race_sex_age.csv contains the Oct 2019 DP for the P12A-I. Sex by Age by (Race) 
 # nhgis_ppdd_20200527.csv contains the June 2020 DP and SF1 data for P12. Sex by Age and P12A-I. Sex by Age by (Race)
-v1a <- read_csv(paste0(data_path, "wide_dp1_050.csv"))
-v1b <- read_csv(paste0(data_path, "ddp_county_race_sex_age.csv" ))
+v1 <- read_csv(paste0(data_path, "wide_dp1_050.csv"))
+#v1b <- read_csv(paste0(data_path, "ddp_county_race_sex_age.csv" ))
 v2 <- read_csv(paste0(data_path, "nhgis_ppdd_20200527_county.csv"))
 
 #### Read in recodes ####
