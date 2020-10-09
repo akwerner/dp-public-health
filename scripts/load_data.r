@@ -22,8 +22,8 @@ v1b <- read_csv(paste0(data_path, "ddp_county_race_sex_age.csv" ))
 v2 <- read_csv(paste0(data_path, "nhgis_ppdd_20200527_county.csv"))
 
 #### Read in recodes ####
-# Only need sex by age data for all races 
-recode <- read_csv(paste0(recode_path, "sex_age_five_year_recode.csv"))
+# Load the sex_age_recode for 5 year age bins and 1 year ages
+recode <- read_csv(paste0(recode_path, "sex_age_recode.csv"))
 
 # file_list <- list.files(recode_path)
 # 
