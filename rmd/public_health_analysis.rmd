@@ -115,8 +115,6 @@ These passes are run for each geographic level in the geographic hierarchy (Figu
 
 ## Data
 
-
-
 Describe public health data (sources, unit of geography, age/race/sex)
 
 Describe the differentially private/2010 Summary File 1 census data (unit of geography, demographic categories used)
