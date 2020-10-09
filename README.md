@@ -91,7 +91,7 @@ _Asthma ED visits_
 - age groups (under 5, 5-14, 15-34, 35-64, 65 and over)
 - off spine geography by age group
 - some suppression for age groups, but that's expected
-- can't get it to export to excel - emailed Glennon for help
+- successfully downloaded asthma ED visits for towns 
 
 _Childhood blood lead_ 
 
