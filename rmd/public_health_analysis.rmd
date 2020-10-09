@@ -117,11 +117,16 @@ These passes are run for each geographic level in the geographic hierarchy (Figu
 
 Describe public health data (sources, unit of geography, age/race/sex)
 
+_Asthma ED_
+_AMI hospitalization_ 
+
 Describe the differentially private/2010 Summary File 1 census data (unit of geography, demographic categories used)
 
 ## Methods
 
 What are we going to compute using multiple denominators?
+
+_age adjustment using the 2000 standard population_ 
 
 ## Results
 
