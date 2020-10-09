@@ -8,6 +8,7 @@
 #### Load packages #### 
 require(tidyverse)
 require(data.table)
+require(readxl)
 
 #### Constants #### 
 data_path <- "data/"
@@ -24,6 +25,9 @@ v2 <- read_csv(paste0(data_path, "nhgis_ppdd_20200527_county.csv"))
 #### Read in recodes ####
 # Load the sex_age_recode for 5 year age bins and 1 year ages
 recode <- read_csv(paste0(recode_path, "sex_age_recode.csv"))
+
+# Load the Rural Urban Continuum Codes 
+rucc <- read_excel(paste0(recode_path, "ruralurbancodes2013.xls"), sheet = "Rural-urban Continuum Code 2013")
 
 # file_list <- list.files(recode_path)
 # 
