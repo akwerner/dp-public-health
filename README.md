@@ -81,6 +81,7 @@ _Childhood blood lead_
 - No other stratification possible
 
 #### Missouri 
+
 The state of Missouri has a health outcome tracking dashboard that supports CSV downloads. We can get a number of outcomes (blood lead level, AMI, low birth weights) at the county level for 2010. There will be suppression/confidentiality in the county-level counts, especially as we stratify the data, but we can get counts for a decent number of counties. 
 
 #### Massachusetts 
