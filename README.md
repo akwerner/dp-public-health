@@ -10,6 +10,21 @@ This analysis compares the results of three different datasets - 2010 Summary Fi
 
 These three data files should be stored in a directory called "data". 
 
+## RDS files 
+To facilitate easier use for this analysis, I created RDS files containing county-level sex by age counts. One file (df_sa_1year.rds) has single year of age by sex, and the second file (df_sa_5year.rds) has five-year age bins by sex. The variables in the file are:
+
+- gisjoin: unique identifier to match with NHGIS data
+- version: 2010 dataset (sf - 2010 SF1; v1 - 2010 DDP; v2 - June 2020 PPMF dataset)
+- age_grp: age group for the record 
+- sex: sex for the record (M, F)
+- n: count of persons 
+- FIPS: five character FIPS codes (to facilitate linking with non-NHGIS datasets)
+- RUCC_2013: rural-urban continuum codes from the USDA (9 different levels to this variable)
+- metro: metro/nonmetro status for the county 
+- pop_cat: population category for the county, based on the 2010 SF1 population count (I created 7 levels for this variable)
+
+I figure the CDC probably maintains data with a five character FIPS code, so I kept it in the file. 
+
 ## Recodes 
 I created a set of recode CSVs to assign each variable its sex, age group, and race. Those recodes are in the data/recodes directory and are used in the prepare_data.r script. In the final data frame, there is a race category with a value of "na". These records are counts for sex by age categories, regardless of race.
 
