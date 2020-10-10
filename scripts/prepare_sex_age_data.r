@@ -48,23 +48,24 @@ df <- bind_rows(long_sf, long_v1)
 df <- bind_rows(df, long_v2)
 
 #### Remove unneeded dfs #### 
-rm(list = ls(pattern = "^v"))
-rm(list = ls(pattern = "^long"))
+rm(v1)
+rm(v2)
 rm(sf)
+rm(list = ls(pattern = "^long"))
 
 #### Join recodes to df #### 
 df <- df %>%
   left_join(recode, by = c("var_code" = "var"))
 
-#### Create final sex/age/race df ####
-# group by county, version, age_grp, sex, race
+#### Create final sex/age df ####
+# group by county, version, age_grp, sex
 # drop NA values before creating the final df 
-df_sar <- df %>%
+df_sa <- df %>%
   filter(!is.na(age_grp)) %>%
   group_by(gisjoin, version, age_grp, sex) %>%
   summarise(n = sum(n))
 
-#### Prepare recodes #### 
+#### Prepare RUCC recodes #### 
 # add GISJOIN to rucc df
 # add metro code to rucc df
 # categories counties by 2010 population, using same categories as Matt Spence (CNStat presentation)
@@ -78,7 +79,7 @@ rucc <- rucc %>%
                                        Population_2010 >= 25000 & Population_2010 < 35000 ~ 3,
                                        Population_2010 >= 35000 & Population_2010 < 50000 ~ 4,
                                        Population_2010 >= 50000 & Population_2010 < 100000 ~ 5,
-                                       Population_2010 >= 100000 ~ 6)) %>%
+                                       Population_2010 >= 100000 ~ 6))
 
 # Apply factor to metro variable 
 rucc$metro <- factor(rucc$metro, levels = c(0,1), labels = c("Non-metro", "Metro"))
@@ -87,12 +88,31 @@ rucc$pop_cat <- factor(rucc$pop_cat, labels = c("< 7,500", "7,500 - 14,999", "15
 
 # Keep required variables from rucc df 
 rucc <- rucc %>%
-  select(gisjoin, RUCC_2013, metro, pop_cat)
+  select(gisjoin, FIPS, RUCC_2013, metro, pop_cat)
 
-#### Apply factors to age_grp, sex, race, and version #### 
-#df$sex <- factor(df$sex, levels = sex_levels, labels = sex_labels)
-#df$age_grp <- factor(df$age_grp, levels = age_grp_levels, labels = age_grp_labels)
-#df$version <- factor(df$version, levels = version_levels, labels = version_labels)
+#### Join RUCC recode to df_sa ### 
+df_sa <- df_sa %>%
+  left_join(rucc, by = "gisjoin")
+
+#### Split df_sa on age_grp to create a 5-year age bin df and a single year of age df #### 
+df_sa_5year <- df_sa %>%
+  filter(age_grp < 100)
+
+df_sa_1year <- df_sa %>%
+  filter(age_grp > 99)
+
+#### Apply factors to version sex, and age_grp #### 
+df_sa_5year$sex <- factor(df_sa_5year$sex, levels = sex_levels, labels = sex_labels)
+df_sa_5year$version <- factor(df_sa_5year$version, levels = version_levels, labels = version_labels)
+df_sa_5year$age_grp <- factor(df_sa_5year$age_grp, levels = age_grp_levels, labels = age_grp_labels)
+
+df_sa_1year$sex <- factor(df_sa_1year$sex, levels = sex_levels, labels = sex_labels)
+df_sa_1year$version <- factor(df_sa_1year$version, levels = version_levels, labels = version_labels)
+df_sa_1year$age_grp <- factor(df_sa_1year$age_grp, levels = age_grp_levels, labels = age_grp_labels)
+
+#### Save to rds files #### 
+saveRDS(df_sa_1year, "data/df_sa_1year.rds")
+saveRDS(df_sa_5year, "data/df_sa_5year.rds")
 
 
 
