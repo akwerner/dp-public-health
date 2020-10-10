@@ -11,7 +11,7 @@ This analysis compares the results of three different datasets - 2010 Summary Fi
 These three data files should be stored in a directory called "data". 
 
 ## RDS files 
-To facilitate easier use for this analysis, I created RDS files containing county-level sex by age counts. One file (df_sa_1year.rds) has single year of age by sex, and the second file (df_sa_5year.rds) has five-year age bins by sex. The variables in the file are:
+To facilitate easier use for this analysis, I created RDS files containing county-level sex by age counts. One file (_data/df_sa_1year.rds_) has single year of age by sex, and the second file (_data/df_sa_5year.rds_) has five-year age bins by sex. The variables in the file are:
 
 - gisjoin: unique identifier to match with NHGIS data
 - version: 2010 dataset (sf - 2010 SF1; v1 - 2010 DDP; v2 - June 2020 PPMF dataset)
