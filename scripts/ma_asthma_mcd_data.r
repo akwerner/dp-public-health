@@ -173,17 +173,21 @@ ma_mcd_adjusted_perc <- ma_mcd_adjusted_perc %>%
 median_ma_mcd_abs_perc <- ma_mcd_adjusted_perc %>%
   filter(var == "abs_perc_diff_sf_v1" | var == "abs_perc_diff_sf_v2") %>%
   group_by(pop_bin, var) %>%
-  summarise(median = median(value, na.rm = TRUE),
-            ntile25 = quantile(value, 0.25, na.rm = TRUE),
-            ntile75 = quantile(value, 0.75, na.rm = TRUE))
+  summarise(Mean = mean(value, na.rm = TRUE),
+            SD = sd(value, na.rm = TRUE),
+            P25 = quantile(value, 0.25, na.rm = TRUE),
+            P50 = median(value, na.rm = TRUE),
+            P75 = quantile(value, 0.75, na.rm = TRUE))
 
 # signed percent diffs.
 median_ma_mcd_perc <- ma_mcd_adjusted_perc %>%
   filter(var == "perc_diff_sf_v1" | var == "perc_diff_sf_v2") %>%
   group_by(pop_bin, var) %>%
-  summarise(median = median(value, na.rm = TRUE),
-            ntile25 = quantile(value, 0.25, na.rm = TRUE),
-            ntile75 = quantile(value, 0.75, na.rm = TRUE))
+  summarise(Mean = mean(value, na.rm = TRUE),
+            SD = sd(value, na.rm = TRUE),
+            P25 = quantile(value, 0.25, na.rm = TRUE),
+            P50 = median(value, na.rm = TRUE),
+            P75 = quantile(value, 0.75, na.rm = TRUE))
 
 #### Box plots by pop size bin #### 
 
