@@ -154,7 +154,9 @@ _Childhood blood lead_
 - county level counts 
 - can specify which ages to include
 
-
+## TODO
+[] Create code to read in county subdivisions (for MA data)
+[] Test out Nick's code on age standardization
 
 
 
