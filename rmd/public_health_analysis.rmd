@@ -139,15 +139,13 @@ We begin with a comparison of the percent differences in age-adjusted asthma ED 
 
 Results are less consistent for towns the four categories with the smallest total populations (less than 10,000 persons). For towns in the 5-10,000 person category, rates computed using DDP and v20200527 differ from rates computes using SF1 by similar magnitudes. Percent difference for the v20200527 has larger mean and median values but a smaller median and interquartile range when compared to the DDP. For towns with fewer than 1,000 persons, the mean percent difference for v20200527 is much lower than the DDP, but the standard deviation, median, and interquartile ranges are all larger for v20200527.
 
+The most inconsistent results are for towns in the 2,500-5,000 person category. The mean and median percent difference for SF1/DDP were negative, meaning that the age-adjusted asthma ED rates based on the DDP were smaller than those based on SF1. When we compare SF1 and v20200527, however, the mean and median percent differences were positive, meaning that the age-adjusted rates based on the v20200527 were larger than those based on SF1. Interquartile ranges were similar, although the 75th percentile percent difference for v20200526 was 5.7 compared to 2.2 for DDP. 
 
+```{r ma_mcd_perc_diff_sfdenom}
 
-
-Percent differences between age-adjusted asthma ED visit rates calculated 
-
-```{r ma_mcd_perc_diff}
 require(gt)
 
-median_ma_mcd_perc %>%
+median_ma_mcd_perc_sfdenom %>%
   gt(rowname_col = "var",
      groupname_col = "pop_bin") %>%
   tab_header(
@@ -160,8 +158,29 @@ median_ma_mcd_perc %>%
     use_seps = FALSE
   ) %>%
   tab_options(
-    row_group.font.weight = "bold"
-  ) %>%
+    row_group.font.weight = "bold")
+
+```
+
+
+```{r ma_mcd_perc_diff}
+# require(gt)
+# 
+# median_ma_mcd_perc %>%
+#   gt(rowname_col = "var",
+#      groupname_col = "pop_bin") %>%
+#   tab_header(
+#     title = "Table X. Percent Difference in 2010 Asthma ED Rates for Massachusetts Towns",
+#     subtitle = "2010 DDP vs. v20200527"
+#   ) %>%
+#   fmt_number(
+#     columns = vars("Mean", "SD", "P25", "P50", "P75"),
+#     decimals = 1,
+#     use_seps = FALSE
+#   ) %>%
+#   tab_options(
+#     row_group.font.weight = "bold"
+#   ) %>%
   # text_transform(
   #   locations = cells_body(
   #     columns = vars(var)),
@@ -173,8 +192,28 @@ median_ma_mcd_perc %>%
 
 ```
 
+Examining the distributions of the percent differences for each population size category, we see similar variability for DDP and v20200527 for towns with fewer than 1,000 persons and towns with 5,000-10,000 persons (Figure X). Variability decreased for the v20200527 results for the three categories with the largest populations and for towns with 1,000-2,500 persons, while variability increased for the v2020527 same results for towns with 2,500-5,000 persons. KEY TAKEAWAY - AGE-ADJUSTED RATES IN TOWNS WITH FEWER THAN 10,000 PERSONS SHOW LITTLE IMPROVEMENT BETWEEN DDP AND V20200527 - SIMILAR DISTRIBUTIONS FOR TWO CATEGORIES, WORST DISTRIBUTION FOR ONE CATEGORY (2.5-5K), AND BETTER DISTRIBUTION FOR ONE CATEGORY (1-2.5K). V20200527 PERFORMS BETTER FOR LARGEST POPULATION CATEGORIES.     
 
-Box plot discussion...
+```{r ma_mcd_adjusted_perc_boxplot}
+ma_mcd_adjusted_perc %>%
+  filter(var == "sf_denom_perc_diff_sf_v1" | var == "sf_denom_perc_diff_sf_v2") %>%
+  ggplot(aes(x = pop_bin, y = value, color = var)) + 
+  geom_boxplot() + 
+  scale_x_discrete(name="Total Population Bins (SF1)") +
+  ylab("Percent Difference (SF denominator)") + 
+  scale_color_brewer(palette = "Set1") + 
+  labs(caption = "Source: Van Riper et al. 2020; US Census Bureau 2019; Massachusetts Department of Health 2020") +
+  ggtitle(paste("2010 SF1 vs. Diff. Private: Percent Difference in Age-Adjusted Asthma ED Visits (MA towns)")) + 
+  annotate("text", x = 0.85, y = 75, label = "DDP", color = oct_color, size = 2) +
+  annotate("text", x = 1.30, y = 45, label = "v20200527", color = july_color, size = 2) +
+  theme_bw() +
+  theme(axis.title = element_text(size = 10),
+        axis.text = element_text(size = 8),
+        plot.title = element_text(size = 12),
+        legend.position = "none",
+        panel.border = element_blank())
+```
+
 
 
 Summary table depicting median percent difference (or mean) and some measure of spread (either 25th and 75th percentiles or standard deviations) for CDC county level analysis
