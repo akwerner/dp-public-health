@@ -157,7 +157,9 @@ _Childhood blood lead_
 ## TODO
 [x] Create code to read in county subdivisions (for MA data)
 [x] Test out Nick's code on age standardization
-[] Add citation to MA dept of health to Zotero biblio
+[x] Add citation to MA dept of health to Zotero biblio
+[x] Add citation to IPUMS NHGIS v20200527 dataset to Zotero biblio
+[x] Add citation to DDP to Zotero biblio
 
 
 
