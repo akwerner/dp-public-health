@@ -155,9 +155,9 @@ _Childhood blood lead_
 - can specify which ages to include
 
 ## TODO
-[] Create code to read in county subdivisions (for MA data)
-[] Test out Nick's code on age standardization
-
+[x] Create code to read in county subdivisions (for MA data)
+[x] Test out Nick's code on age standardization
+[] Add citation to MA dept of health to Zotero biblio
 
 
 
