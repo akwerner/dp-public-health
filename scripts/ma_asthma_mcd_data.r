@@ -202,92 +202,92 @@ median_ma_mcd_perc_sfdenom <- ma_mcd_adjusted_perc %>%
 #### Box plots by pop size bin #### 
 
 # colors 
-oct_color <- brewer.pal(3, "Set1")[1]
-july_color <- brewer.pal(3, "Set1")[2]
-
-# Absolute percent difference between sf and v1 / sf and v2
-ma_mcd_adjusted_perc %>%
-  filter(var == "abs_perc_diff_sf_v1" | var == "abs_perc_diff_sf_v2") %>%
-  ggplot(aes(x = pop_bin, y = value, color = var)) + 
-    geom_boxplot() + 
-    scale_x_discrete(name="Total Population Bins (SF1)") +
-    ylab("Absolute Percent Difference (Average denominator)") + 
-    scale_color_brewer(palette = "Set1") + 
-    labs(caption = "Source: Van Riper et al. 2020; US Census Bureau 2019; Massachusetts Department of Health 2020") +
-    ggtitle(paste("2010 SF1 vs. Diff. Private: Absolute Percent Difference in Age-Adjusted Asthma ED Visits (MA towns)")) + 
-    annotate("text", x = 0.85, y = 53, label = "Oct. 2019", color = oct_color, size = 4) +
-    annotate("text", x = 1.15, y = 40.5, label = "July 2020", color = july_color, size = 4) +
-    theme_bw() +
-    theme(axis.title = element_text(size = 16),
-          axis.text = element_text(size = 12),
-          plot.title = element_text(size = 20),
-          legend.position = "none",
-          panel.border = element_blank())
-
-ggsave(paste("figures/ma_towns_asthma_ed_abs_perc_diff", ".png", sep=""), width=10, height=5.625, dpi=150)
-
-# Percent difference (positive and negative) between sf and v1 / sf and v2
-ma_mcd_adjusted_perc %>%
-  filter(var == "perc_diff_sf_v1" | var == "perc_diff_sf_v2") %>%
-  ggplot(aes(x = pop_bin, y = value, color = var)) + 
-  geom_boxplot() + 
-  scale_x_discrete(name="Total Population Bins (SF1)") +
-  ylab("Percent Difference (Average denominator)") + 
-  scale_color_brewer(palette = "Set1") + 
-  labs(caption = "Source: Van Riper et al. 2020; US Census Bureau 2019; Massachusetts Department of Health 2020") +
-  ggtitle(paste("2010 SF1 vs. Diff. Private: Percent Difference in Age-Adjusted Asthma ED Visits (MA towns)")) + 
-  annotate("text", x = 0.85, y = 55, label = "Oct. 2019", color = oct_color, size = 4) +
-  annotate("text", x = 1.15, y = 37, label = "July 2020", color = july_color, size = 4) +
-  theme_bw() +
-  theme(axis.title = element_text(size = 16),
-        axis.text = element_text(size = 12),
-        plot.title = element_text(size = 20),
-        legend.position = "none",
-        panel.border = element_blank())
-
-ggsave(paste("figures/ma_towns_asthma_ed_perc_diff", ".png", sep=""), width=10, height=5.625, dpi=150)
-
-#### Box plots with SF as denominator for percent difference #### 
-
-# Absolute percent difference between sf and v1 / sf and v2
-ma_mcd_adjusted_perc %>%
-  filter(var == "sf_denom_abs_perc_diff_sf_v1" | var == "sf_denom_abs_perc_diff_sf_v2") %>%
-  ggplot(aes(x = pop_bin, y = value, color = var)) + 
-  geom_boxplot() + 
-  scale_x_discrete(name="Total Population Bins (SF1)") +
-  ylab("Absolute Percent Difference (SF denominator)") + 
-  scale_color_brewer(palette = "Set1") + 
-  labs(caption = "Source: Van Riper et al. 2020; US Census Bureau 2019; Massachusetts Department of Health 2020") +
-  ggtitle(paste("2010 SF1 vs. Diff. Private: Absolute Percent Difference in Age-Adjusted Asthma ED Visits (MA towns)")) + 
-  annotate("text", x = 0.85, y = 53, label = "Oct. 2019", color = oct_color, size = 4) +
-  annotate("text", x = 1.15, y = 40.5, label = "July 2020", color = july_color, size = 4) +
-  theme_bw() +
-  theme(axis.title = element_text(size = 16),
-        axis.text = element_text(size = 12),
-        plot.title = element_text(size = 20),
-        legend.position = "none",
-        panel.border = element_blank())
-
-ggsave(paste("figures/sf_denom_ma_towns_asthma_ed_abs_perc_diff", ".png", sep=""), width=10, height=5.625, dpi=150)
-
-# Percent difference (positive and negative) between sf and v1 / sf and v2
-ma_mcd_adjusted_perc %>%
-  filter(var == "sf_denom_perc_diff_sf_v1" | var == "sf_denom_perc_diff_sf_v2") %>%
-  ggplot(aes(x = pop_bin, y = value, color = var)) + 
-  geom_boxplot() + 
-  scale_x_discrete(name="Total Population Bins (SF1)") +
-  ylab("Percent Difference (SF denominator)") + 
-  scale_color_brewer(palette = "Set1") + 
-  labs(caption = "Source: Van Riper et al. 2020; US Census Bureau 2019; Massachusetts Department of Health 2020") +
-  ggtitle(paste("2010 SF1 vs. Diff. Private: Percent Difference in Age-Adjusted Asthma ED Visits (MA towns)")) + 
-  annotate("text", x = 0.85, y = 55, label = "Oct. 2019", color = oct_color, size = 4) +
-  annotate("text", x = 1.15, y = 37, label = "July 2020", color = july_color, size = 4) +
-  theme_bw() +
-  theme(axis.title = element_text(size = 16),
-        axis.text = element_text(size = 12),
-        plot.title = element_text(size = 20),
-        legend.position = "none",
-        panel.border = element_blank())
-
-ggsave(paste("figures/sf_denom_ma_towns_asthma_ed_perc_diff", ".png", sep=""), width=10, height=5.625, dpi=150)
+# oct_color <- brewer.pal(3, "Set1")[1]
+# july_color <- brewer.pal(3, "Set1")[2]
+# 
+# # Absolute percent difference between sf and v1 / sf and v2
+# ma_mcd_adjusted_perc %>%
+#   filter(var == "abs_perc_diff_sf_v1" | var == "abs_perc_diff_sf_v2") %>%
+#   ggplot(aes(x = pop_bin, y = value, color = var)) + 
+#     geom_boxplot() + 
+#     scale_x_discrete(name="Total Population Bins (SF1)") +
+#     ylab("Absolute Percent Difference (Average denominator)") + 
+#     scale_color_brewer(palette = "Set1") + 
+#     labs(caption = "Source: Van Riper et al. 2020; US Census Bureau 2019; Massachusetts Department of Health 2020") +
+#     ggtitle(paste("2010 SF1 vs. Diff. Private: Absolute Percent Difference in Age-Adjusted Asthma ED Visits (MA towns)")) + 
+#     annotate("text", x = 0.85, y = 53, label = "Oct. 2019", color = oct_color, size = 4) +
+#     annotate("text", x = 1.15, y = 40.5, label = "July 2020", color = july_color, size = 4) +
+#     theme_bw() +
+#     theme(axis.title = element_text(size = 16),
+#           axis.text = element_text(size = 12),
+#           plot.title = element_text(size = 20),
+#           legend.position = "none",
+#           panel.border = element_blank())
+# 
+# ggsave(paste("figures/ma_towns_asthma_ed_abs_perc_diff", ".png", sep=""), width=10, height=5.625, dpi=150)
+# 
+# # Percent difference (positive and negative) between sf and v1 / sf and v2
+# ma_mcd_adjusted_perc %>%
+#   filter(var == "perc_diff_sf_v1" | var == "perc_diff_sf_v2") %>%
+#   ggplot(aes(x = pop_bin, y = value, color = var)) + 
+#   geom_boxplot() + 
+#   scale_x_discrete(name="Total Population Bins (SF1)") +
+#   ylab("Percent Difference (Average denominator)") + 
+#   scale_color_brewer(palette = "Set1") + 
+#   labs(caption = "Source: Van Riper et al. 2020; US Census Bureau 2019; Massachusetts Department of Health 2020") +
+#   ggtitle(paste("2010 SF1 vs. Diff. Private: Percent Difference in Age-Adjusted Asthma ED Visits (MA towns)")) + 
+#   annotate("text", x = 0.85, y = 55, label = "Oct. 2019", color = oct_color, size = 4) +
+#   annotate("text", x = 1.15, y = 37, label = "July 2020", color = july_color, size = 4) +
+#   theme_bw() +
+#   theme(axis.title = element_text(size = 16),
+#         axis.text = element_text(size = 12),
+#         plot.title = element_text(size = 20),
+#         legend.position = "none",
+#         panel.border = element_blank())
+# 
+# ggsave(paste("figures/ma_towns_asthma_ed_perc_diff", ".png", sep=""), width=10, height=5.625, dpi=150)
+# 
+# #### Box plots with SF as denominator for percent difference #### 
+# 
+# # Absolute percent difference between sf and v1 / sf and v2
+# ma_mcd_adjusted_perc %>%
+#   filter(var == "sf_denom_abs_perc_diff_sf_v1" | var == "sf_denom_abs_perc_diff_sf_v2") %>%
+#   ggplot(aes(x = pop_bin, y = value, color = var)) + 
+#   geom_boxplot() + 
+#   scale_x_discrete(name="Total Population Bins (SF1)") +
+#   ylab("Absolute Percent Difference (SF denominator)") + 
+#   scale_color_brewer(palette = "Set1") + 
+#   labs(caption = "Source: Van Riper et al. 2020; US Census Bureau 2019; Massachusetts Department of Health 2020") +
+#   ggtitle(paste("2010 SF1 vs. Diff. Private: Absolute Percent Difference in Age-Adjusted Asthma ED Visits (MA towns)")) + 
+#   annotate("text", x = 0.85, y = 53, label = "Oct. 2019", color = oct_color, size = 4) +
+#   annotate("text", x = 1.15, y = 40.5, label = "July 2020", color = july_color, size = 4) +
+#   theme_bw() +
+#   theme(axis.title = element_text(size = 16),
+#         axis.text = element_text(size = 12),
+#         plot.title = element_text(size = 20),
+#         legend.position = "none",
+#         panel.border = element_blank())
+# 
+# ggsave(paste("figures/sf_denom_ma_towns_asthma_ed_abs_perc_diff", ".png", sep=""), width=10, height=5.625, dpi=150)
+# 
+# # Percent difference (positive and negative) between sf and v1 / sf and v2
+# ma_mcd_adjusted_perc %>%
+#   filter(var == "sf_denom_perc_diff_sf_v1" | var == "sf_denom_perc_diff_sf_v2") %>%
+#   ggplot(aes(x = pop_bin, y = value, color = var)) + 
+#   geom_boxplot() + 
+#   scale_x_discrete(name="Total Population Bins (SF1)") +
+#   ylab("Percent Difference (SF denominator)") + 
+#   scale_color_brewer(palette = "Set1") + 
+#   labs(caption = "Source: Van Riper et al. 2020; US Census Bureau 2019; Massachusetts Department of Health 2020") +
+#   ggtitle(paste("2010 SF1 vs. Diff. Private: Percent Difference in Age-Adjusted Asthma ED Visits (MA towns)")) + 
+#   annotate("text", x = 0.85, y = 55, label = "Oct. 2019", color = oct_color, size = 4) +
+#   annotate("text", x = 1.15, y = 37, label = "July 2020", color = july_color, size = 4) +
+#   theme_bw() +
+#   theme(axis.title = element_text(size = 16),
+#         axis.text = element_text(size = 12),
+#         plot.title = element_text(size = 20),
+#         legend.position = "none",
+#         panel.border = element_blank())
+# 
+# ggsave(paste("figures/sf_denom_ma_towns_asthma_ed_perc_diff", ".png", sep=""), width=10, height=5.625, dpi=150)
 
