@@ -15,15 +15,15 @@ Public health scientists and practitioners rely on decennial census data on the 
 
 For the 2020 Decennial Census, the US Census Bureau is changing its disclosure avoidance system to provide stronger confidentiality protections for respondents. The new system, based on differential privacy, injects noise into nearly all published statistics. This noise injection necessarily makes statistics less accurate to provide enhanced confidentiality protections. Less accurate data, however, may hurt our ability to track health outcomes across a broad variety of sub-populations. 
 
-To better understand the potential impacts the new disclosure avoidance system may have on public health research and monitoring, we will compare age-adjusted XXXXXX rates using three datasets based on the 2010 decennial census - Summary File 1, the 2010 Demonstration Data Product (DDP), and the v20200527 dataset. The latter two datasets were produced by different versions of the new disclosure avoidance system, and Summary File 1 was produced using household swapping for disclosure avoidance. These comparisons will help us understand the potential issues public health scientists may face when using differentially private data.   
+To better understand the potential impacts the new disclosure avoidance system may have on public health research and monitoring, we will compare age-adjusted asthma emergency department visit, XXXXXX rates using three datasets based on the 2010 decennial census - Summary File 1, the 2010 Demonstration Data Product (DDP), and the v20200527 dataset. The latter two datasets were produced by different versions of the new disclosure avoidance system, and Summary File 1 was produced using household swapping for disclosure avoidance. These comparisons will help us understand the potential issues public health scientists may face when using differentially private data.   
 
 ## Differential Privacy and the Decennial Census 
 
 In August 2018, the US Census Bureau announced it would adopt a new method to protect respondent confidentiality in the 2020 Decennial Census of Population and Housing (Abowd 2018). Instead of using techniques such as cell suppression or household swapping^[Readers interested in learning about the disclosure avoidance techniques used by the Census Bureau are directed to McKenna (cite her paper)], the Bureau will use a technique based on differential privacy to protect confidentiality. This change "marks a sea change for the way that official statistics are produced and published" (Garfinkel et al. 2018 - ACM paper).  
 
-Why did the Bureau decide to change its disclosure avoidance system? Bureau scientists executed a reconstruction and re-identification attack on the publicly available tabulations from the 2010 decennial census. Using the database reconstruction theorem (CITE Dinur and Nissim), the Bureau reconstructed 308,745,538 person records from census tract and block data. Each record included the age, sex, race, Hispanic ethnicity, and census block identifier. The Bureau then linked the reconstructed records with a commercial database (which included names) using age, sex, and block identifier. Approximately forty-five percent (139 million) of the reconstructed records matched a record in the commercial database. Finally, the Bureau attempted to link these 139 million records to the confidential microdata on all attributes---census block identifier, name, age, sex, race, and Hispanic ethnicity. For 52 million records (seventeen percent of the US resident population in 2010), the Bureau confirmed that the two records referred to the same person.
+Why did the Bureau decide to change its disclosure avoidance system? Bureau scientists executed a reconstruction and re-identification attack on the publicly available tabulations from the 2010 decennial census. Using the database reconstruction theorem (CITE Dinur and Nissim), the Bureau reconstructed 308,745,538 person records from census tract and block data. Each record included the age, sex, race, Hispanic ethnicity, and census block identifier. The Bureau then linked the reconstructed records with a commercial database (which included names) using age, sex, and block identifier. Approximately forty-five percent (139 million) of the reconstructed records matched a record in the commercial database. Finally, the Bureau attempted to link these 139 million records to the confidential microdata on all attributes---census block identifier, name, age, sex, race, and Hispanic ethnicity. For 52 million records (seventeen percent of the US resident population in 2010), the Bureau confirmed that the two records referred to the same person (CITE Leclerc presentation; CITE Abowd blog post).
 
-Results of this attack pushed the Bureau to develop and implement a new disclosure avoidance technique that provide stronger confidentiality protections than prior methods. The new technique is based on differential privacy, which provides a mathematically provable lower bound on the amount of private information leaked when statistics are published (CITE Dwork et al). Algorithms that satisfy differential privacy typically follow a pattern of calculating cross-tabulations from the confidential data and injecting noise drawn from a statistical distribution in the cells of the cross-tabulation. The shape of the statistical distribution is determined by parameters established by the data producer prior to the initial cross-tabulation.^[Traditional disclosure avoidance techniques, such as swapping, target statistically unique individuals or households identified after generating the initial cross-tabulations. After identifying these individuals or households, the Bureau applies swapping and then re-creates the cross-tabulations from the swapped microdata. Swap rules and rates are secret and have never been released to the general public (CITE MCKENNA? or BOYD?). Hansen (CITE NYTimes article) found evidence of swapping when he examined the demographic characteristics of the census block containing Liberty Island in New York City.]          
+Results of this attack pushed the Bureau to develop and implement a new disclosure avoidance technique that provide stronger confidentiality protections than prior methods. The new technique is based on differential privacy, which provides a mathematically provable lower bound on the amount of private information leaked when statistics are published (CITE Dwork et al). Algorithms that satisfy differential privacy typically follow a pattern of calculating cross-tabulations from the confidential data and injecting noise drawn from a statistical distribution in the cells of the cross-tabulation. The shape of the statistical distribution is determined by parameters established by the data producer prior to the initial cross-tabulation.^[Traditional disclosure avoidance techniques, such as swapping, target statistically unique individuals or households identified after generating the initial cross-tabulations. After identifying these individuals or households, the Bureau applies swapping and then re-creates the cross-tabulations from the swapped microdata. Swap rules and rates are secret and have never been released to the general public (CITE MCKENNA and BOYD?). Hansen (CITE NYTimes article) found evidence of swapping when he examined the demographic characteristics of the census block containing Liberty Island in New York City.]          
 
 The Bureau's new disclosure avoidance system relies on many parameters that must be established before execution, and the values of these parameters influence the accuracy and utility of the published data along with the privacy protection afforded respondents. In the case of the 2020 decennial census, the parameters will be set by the Bureau's Data Stewardship Executive Policy (DSEP) committee. DSEP will select parameters that inherently privilege particular statistics over others, and it is crucial that data users understand this fact.  
 
@@ -39,7 +39,35 @@ For both the DDP and v20200527 datasets, the Census Bureau's Data Stewardship Ex
 
 #### Geographic Levels
 
-If we think of the cross-tabulations into which noise is injected as a set of rows and columns, the geographic levels define the rows. Each row in a cross-tabulation is a geographic unit within a geographic level (e.g., Autauga County, Alabama, is a geographic unit in the County geographic level). For both the DDP and v20200527 datasets, seven geographic levels in the Census Bureau's hierarchy received direct allocations of the PLB. The nation and state received 20% each, and the remaining five levels (county, census tract group^[The census tract group is not a standard unit in the Census Bureau's geographic hierarchy. It was created specifically for the disclosure avoidance system to control the number of child units for each county], census tract, block group, and block) received 12% each. Geographic levels that receive no direct PLB allocation accumulate accuracy from the units that comprise them.
+If we think of the cross-tabulations into which noise is injected as a set of rows and columns, the geographic levels define the rows. Each row in a cross-tabulation is a geographic unit within a geographic level (e.g., Autauga County, Alabama, is a geographic unit in the County geographic level). For both the DDP and v20200527 datasets, seven geographic levels in the Census Bureau's hierarchy received direct allocations of the PLB. The nation and state received 20% each, and the remaining five levels (county, census tract group^[The census tract group is not a standard unit in the Census Bureau's geographic hierarchy. It was created specifically for the disclosure avoidance system to control the number of child units for each county], census tract, block group, and block) received 12% each (Table X). Geographic levels that receive no direct PLB allocation accumulate accuracy from the units that comprise them.
+
+```{r geog_level_alloc_table}
+
+require(gt)
+
+geog_alloc_fractions <- data.frame(geog_levels = c("Nation", "State", "County", "Tract Group", "Tract", "Block Group", "Block"),
+                                   allocation = c(0.20, 0.20, 0.12, 0.12, 0.12, 0.12, 0.12))
+
+geog_alloc_fractions %>%
+  gt() %>%
+  tab_header(
+    title = "Table X. Fractional Allocations to Geographic Levels for DDP and v20200527"
+  ) %>%
+  cols_label(
+    geog_levels = "Geographic level",
+    allocation = "Allocation"
+  ) %>%
+  fmt_number(
+    columns = vars("allocation"),
+    decimals = 2,
+    use_seps = FALSE
+  ) %>%
+  tab_options(
+    column_labels.font.weight = "bold"
+  )
+  
+```
+
 
 #### Queries 
 
@@ -77,7 +105,7 @@ We compute $\epsilon$ for each combination by multiplying the PLB, geographic le
 
 $$\epsilon = PLB * GeogLevel_{fraction} * Query_{fraction}$$
 
-For the DDP and v20200527, the PLB was 4.0, the geographic level fractions are listed in XXXX, and the query fractions are shown in the XXXX column of Table X.
+For the DDP and v20200527, the PLB was 4.0, the geographic level fractions are listed in Table X, and the query fractions are shown in the _Allocation_ column of Table X.
 
 ##### Compute the Scale Parameter for the Statistical Distribution
 
@@ -92,6 +120,48 @@ We can compute the standard deviation for each distribution as follows:
 
 $$\sigma = \sqrt{2 * s^2}$$
 For the Laplace distribution, approximately 75% of the random values will fall within 1 standard deviation of the mean as compared to 68% of random values in the normal distribution. But, the tails of the Laplace distribution are thicker than the normal distribution, increasing the probability of drawing a random value that is 3 or 4 times the standard deviation. (SHOULD I ADD PERCENTAGES TO SHOW THIS).   
+
+```{r query_allocs_table}
+
+require(gt)
+
+query_allocs_wide %>%
+  gt(groupname_col = "vintage",
+     rowname_col = "query") %>%
+  tab_header(
+    title = "Table X. Fractional Allocations, Scale Factors, and Standard Deviations for Queries",
+    subtitle = "2010 DDP vs. v20200527"
+    ) %>%
+  tab_stubhead(
+    label = "Query"
+  ) %>%
+  tab_spanner(
+    label = "County/Block",
+    columns = vars(s_County_Block, sd_County_Block)
+  ) %>%
+  tab_spanner(
+    label = "Nation/State",
+    columns = vars(s_Nation_State, sd_Nation_State)
+  ) %>%
+  cols_label(
+    num_categories = "# Categories",
+    allocation = "Allocation",
+    s_Nation_State = "Scale",
+    sd_Nation_State = "SD",
+    s_County_Block = "Scale",
+    sd_County_Block = "SD"
+  ) %>%
+  fmt_number(
+       columns = vars("s_Nation_State", "sd_Nation_State", "s_County_Block", "sd_County_Block"),
+    decimals = 1,
+    use_seps = FALSE
+  ) %>%
+  tab_options(
+    row_group.font.weight = "bold")
+
+
+```
+
 
 <!-- Larger scale parameters represent distributions with higher variances, which yield potentially larger noise values.  -->
 
@@ -202,7 +272,7 @@ ma_mcd_adjusted_perc %>%
   scale_x_discrete(name="Total Population Bins (SF1)") +
   ylab("Percent Difference (SF denominator)") + 
   scale_color_brewer(palette = "Set1") + 
-  labs(caption = "Source: Van Riper et al. 2020; US Census Bureau 2019; Massachusetts Department of Health 2020") +
+  labs(caption = "Source: Van Riper et al. 2020; US Census Bureau 2019; Massachusetts Environmental Public Health Tracking Program 2010") +
   ggtitle(paste("2010 SF1 vs. Diff. Private: Percent Difference in Age-Adjusted Asthma ED Visits (MA towns)")) + 
   annotate("text", x = 0.85, y = 75, label = "DDP", color = oct_color, size = 2) +
   annotate("text", x = 1.30, y = 45, label = "v20200527", color = july_color, size = 2) +
@@ -213,6 +283,7 @@ ma_mcd_adjusted_perc %>%
         legend.position = "none",
         panel.border = element_blank())
 ```
+
 
 
 
