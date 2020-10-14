@@ -189,6 +189,16 @@ median_ma_mcd_perc <- ma_mcd_adjusted_perc %>%
             P50 = median(value, na.rm = TRUE),
             P75 = quantile(value, 0.75, na.rm = TRUE))
 
+# signed percent diffs. using SF as the denominator
+median_ma_mcd_perc_sfdenom <- ma_mcd_adjusted_perc %>%
+  filter(var == "sf_denom_perc_diff_sf_v1" | var == "sf_denom_perc_diff_sf_v2") %>%
+  group_by(pop_bin, var) %>%
+  summarise(Mean = mean(value, na.rm = TRUE),
+            SD = sd(value, na.rm = TRUE),
+            P25 = quantile(value, 0.25, na.rm = TRUE),
+            P50 = median(value, na.rm = TRUE),
+            P75 = quantile(value, 0.75, na.rm = TRUE))
+
 #### Box plots by pop size bin #### 
 
 # colors 
