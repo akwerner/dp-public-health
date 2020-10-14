@@ -17,6 +17,8 @@ health_data_path <- "data/health_outcomes/"
 
 #### Read in RDS file for MA mcd #### 
 df <- readRDS("data/df_sa_5year_MA_mcd.rds")
+mcd_name <- readRDS("data/mcd_name_gisjoin_crosswalk.RDS")
+mcd_pop <- readRDS("data/mcd_pop_bins.rds")
 
 #### Read in Asthma ED visit data #### 
 ed <- read_csv(paste0(health_data_path, "hospitalization.csv"))

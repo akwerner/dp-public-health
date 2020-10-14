@@ -118,6 +118,8 @@ df_sa_1year$age_grp <- factor(df_sa_1year$age_grp, levels = age_grp_levels, labe
 #### Save to rds files #### 
 saveRDS(df_sa_1year, "data/df_sa_1year_MA_mcd.rds")
 saveRDS(df_sa_5year, "data/df_sa_5year_MA_mcd.rds")
+saveRDS(mcd_name, "data/mcd_name_gisjoin_crosswalk.rds")
+saveRDS(mcd_pop, "data/mcd_pop_bins.rds")
 
 
 

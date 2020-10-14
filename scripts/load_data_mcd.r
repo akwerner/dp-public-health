@@ -7,7 +7,6 @@
 
 #### Load packages #### 
 require(tidyverse)
-require(data.table)
 
 #### Constants #### 
 data_path <- "data/"
