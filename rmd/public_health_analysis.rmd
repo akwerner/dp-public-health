@@ -6,8 +6,26 @@ output: html_document
 ---
 
 ```{r setup, include=FALSE}
-knitr::opts_chunk$set(echo = TRUE)
+require(knitr)
+opts_chunk$set(echo = TRUE)
+#opts_knit$set(root.dir = "/Documents/scratch/dp/dp-public-health/")
+knitr::opts_knit$set(root.dir = rprojroot::find_rstudio_root_file())
+
+# install packages
+require(tidyverse)
+require(gt)
+require(janitor)
+require(RColorBrewer)
+
 ```
+
+```{r source_create_allocation_df, echo=FALSE, include = FALSE}
+source("scripts/create_allocation_df.r")
+```
+```{r source_ma_asthma_mcd_data_script, echo=FALSE, include = FALSE}
+source("scripts/ma_asthma_mcd_data.r")
+```
+
 
 ## Introduction 
 
@@ -39,11 +57,11 @@ For both the DDP and v20200527 datasets, the Census Bureau's Data Stewardship Ex
 
 #### Geographic Levels
 
-If we think of the cross-tabulations into which noise is injected as a set of rows and columns, the geographic levels define the rows. Each row in a cross-tabulation is a geographic unit within a geographic level (e.g., Autauga County, Alabama, is a geographic unit in the County geographic level). For both the DDP and v20200527 datasets, seven geographic levels in the Census Bureau's hierarchy received direct allocations of the PLB. The nation and state received 20% each, and the remaining five levels (county, census tract group^[The census tract group is not a standard unit in the Census Bureau's geographic hierarchy. It was created specifically for the disclosure avoidance system to control the number of child units for each county], census tract, block group, and block) received 12% each (Table X). Geographic levels that receive no direct PLB allocation accumulate accuracy from the units that comprise them.
+If we think of the cross-tabulations into which noise is injected as a set of rows and columns, the geographic levels define the rows. Each row in a cross-tabulation is a geographic unit within a geographic level (e.g., Autauga County, Alabama, is a geographic unit in the County geographic level). For both the DDP and v20200527 datasets, seven geographic levels in the Census Bureau's hierarchy received direct allocations of the PLB. The nation and state received 20% each, and the remaining five levels (county, census tract group^[The census tract group is not a standard unit in the Census Bureau's geographic hierarchy. It was created specifically for the disclosure avoidance system to control the number of child units for each county], census tract, block group, and block) received 12% each (Table 1). Geographic levels that receive no direct PLB allocation accumulate accuracy from the units that comprise them.
 
-```{r geog_level_alloc_table}
+```{r geog_level_alloc_table, echo=FALSE}
 
-require(gt)
+#require(gt)
 
 geog_alloc_fractions <- data.frame(geog_levels = c("Nation", "State", "County", "Tract Group", "Tract", "Block Group", "Block"),
                                    allocation = c(0.20, 0.20, 0.12, 0.12, 0.12, 0.12, 0.12))
@@ -75,7 +93,7 @@ If geographic levels define the rows of a cross-tabulation, then queries define 
 
 Queries defined in the disclosure avoidance system do not have a one-to-one relationship with tables published in the DDP or v20200527 datasets. The queries are used in the noise injection and optimization processes, and the published tables are created from microdata created by those processes. Categories in the published tables can and will differ from those used in the queries. 
 
-The Census Bureau designed seven and five queries to support the production of person tables in the DDP and v20200527, respectively, and these queries received direct PLB allocations (Table X). Query descriptions and PLB allocations are shown in Table X. The _voting age * Hispanic * race * citizenship_ query, which is used for legislative redistricting, received the largest allocation (50%) in the DDP, and the _total population_ query received the largest allocation (30%) in v20200527. 
+The Census Bureau designed seven and five queries to support the production of person tables in the DDP and v20200527, respectively, and these queries received direct PLB allocations. Query descriptions and PLB allocations are shown in Table 2. The _voting age * Hispanic * race * citizenship_ query, which is used for legislative redistricting, received the largest allocation (50%) in the DDP, and the _total population_ query received the largest allocation (30%) in v20200527. 
 
 #### Invariants and Constraints
 
@@ -121,9 +139,12 @@ We can compute the standard deviation for each distribution as follows:
 $$\sigma = \sqrt{2 * s^2}$$
 For the Laplace distribution, approximately 75% of the random values will fall within 1 standard deviation of the mean as compared to 68% of random values in the normal distribution. But, the tails of the Laplace distribution are thicker than the normal distribution, increasing the probability of drawing a random value that is 3 or 4 times the standard deviation. (SHOULD I ADD PERCENTAGES TO SHOW THIS).   
 
-```{r query_allocs_table}
+```{r source_create_sllocation_df, include=FALSE}
+#source("scripts/create_allocation_df.r", local = knitr::knit_global())
+```
 
-require(gt)
+
+```{r query_allocs_table, echo=FALSE}
 
 query_allocs_wide %>%
   gt(groupname_col = "vintage",
@@ -158,12 +179,7 @@ query_allocs_wide %>%
   ) %>%
   tab_options(
     row_group.font.weight = "bold")
-
-
 ```
-
-
-<!-- Larger scale parameters represent distributions with higher variances, which yield potentially larger noise values.  -->
 
 ##### Generate and Inject Random Noise in each Cell
 
@@ -175,11 +191,20 @@ The output of the prior step is a set of noisy, differentially private, histogra
 
 Different post-processing routines were used to generate the DDP and v20200527 datasets. Both routines follow the same general structure in that they start at the national level and work down the geographic hierarchy, successively generating data for finer geographic levels. However, the optimization step for each geographic level differs. 
 
-For the DDP, the algorithm minimized the differences between the noisy detailed histogram and the noisy DP queries, along with satisfying invariants, non-negativity, and consistency, in a single optimization step (Figure X, Panel Z). The algorithm first optimized the nation-level queries, and then moved down the geographic hierarchy (Figure X, Panel Y) until it produced the optimized block-level queries. Those queries were then converted to microdata that were tabulated for publication. ISSUES WITH THIS - this is what caused lots of issues identified at CNStat, etc...?
+For the DDP, the algorithm minimized the differences between the noisy detailed histogram and the noisy DP queries, along with satisfying invariants, non-negativity, and consistency, in a single optimization step (Figure X). The algorithm first optimized the nation-level queries, and then moved down the geographic hierarchy until it produced the optimized block-level queries. Those queries were then converted to microdata that were tabulated for publication. ISSUES WITH THIS - this is what caused lots of issues identified at CNStat, etc...?
 
-To ameliorate inaccuracies in the DDP, the Census Bureau redesigned the post-processing routine, creating what is now called the _multipass_ routine. This new routine was used on the v20200527 dataset. Instead of optimizing all cells in the detailed and DP queries at one time for a given geographic level, the routine runs multiple optimization steps for each geographic level. In the first pass, the routine optimizes the differences between the noisy detailed histogram and the total population and household/group quarters counts. In the second pass, the routine optimizes differences between the noisy detailed histogram and the _voting age * Hispanic * race_ query, controlling the counts to the results of the first pass (Figure Y, Panel Z). In other words, if we sum the optimized counts from the _voting age * Hispanic * race_ categories, the result will be close to the optimized total population count generated in the first pass. 
+```{r tda_multipass, echo=FALSE, fig.cap = "Figure 1. Top Down Algorithm used for the DDP dataset"}
+knitr::include_graphics("/Users/vanriper/Documents/scratch/dp/dp-public-health/figures/TDA_diagrams_journal_articles - DDP.png")
+```
+
+To ameliorate inaccuracies in the DDP, the Census Bureau redesigned the post-processing routine, creating what is now called the _multipass_ routine. This new routine was used on the v20200527 dataset. Instead of optimizing all cells in the detailed and DP queries at one time for a given geographic level, the routine runs multiple optimization steps for each geographic level. In the first pass, the routine optimizes the differences between the noisy detailed histogram and the total population and household/group quarters counts. In the second pass, the routine optimizes differences between the noisy detailed histogram and the _voting age * Hispanic * race_ query, controlling the counts to the results of the first pass (Figure Y). In other words, if we sum the optimized counts from the _voting age * Hispanic * race_ categories, the result will be close to the optimized total population count generated in the first pass. 
 
 The third pass optimizes differences between the noisy detailed histogram and the _age * sex * Hispanic * race_ query, controlling the counts to the results of the second pass. 
+
+```{r tda_ddp, echo=FALSE, fig.cap = "Figure 1. Top Down Algorithm used for the v20200527 dataset"}
+knitr::include_graphics("/Users/vanriper/Documents/scratch/dp/dp-public-health/figures/TDA_diagrams_journal_articles - Multipass.png")
+```
+
 
 These passes are run for each geographic level in the geographic hierarchy (Figure Y, Panel Y). All passes are run for the nation level first, then the state level, and down the hierarchy until they are run for the block level. Essentially, the multipass routine is top-down along two dimensions---the geographic hierarchy and the query hierarchy. By adding the query hierarchy and the extra optimization steps for queries, the Bureau may prioritize particular use cases. For the v20200527 dataset, the top query priority was total population counts and counts of persons in households or group quarters, and the second and third query priorities were counts that support redistricting and population estimates, respectively. 
 
@@ -211,7 +236,7 @@ Results are less consistent for towns the four categories with the smallest tota
 
 The most inconsistent results are for towns in the 2,500-5,000 person category. The mean and median percent difference for SF1/DDP were negative, meaning that the age-adjusted asthma ED rates based on the DDP were smaller than those based on SF1. When we compare SF1 and v20200527, however, the mean and median percent differences were positive, meaning that the age-adjusted rates based on the v20200527 were larger than those based on SF1. Interquartile ranges were similar, although the 75th percentile percent difference for v20200526 was 5.7 compared to 2.2 for DDP. 
 
-```{r ma_mcd_perc_diff_sfdenom}
+```{r ma_mcd_perc_diff_sfdenom, echo=FALSE}
 
 require(gt)
 
@@ -233,7 +258,7 @@ median_ma_mcd_perc_sfdenom %>%
 ```
 
 
-```{r ma_mcd_perc_diff}
+```{r ma_mcd_perc_diff, echo=FALSE}
 # require(gt)
 # 
 # median_ma_mcd_perc %>%
@@ -264,16 +289,21 @@ median_ma_mcd_perc_sfdenom %>%
 
 Examining the distributions of the percent differences for each population size category, we see similar variability for DDP and v20200527 for towns with fewer than 1,000 persons and towns with 5,000-10,000 persons (Figure X). Variability decreased for the v20200527 results for the three categories with the largest populations and for towns with 1,000-2,500 persons, while variability increased for the v2020527 same results for towns with 2,500-5,000 persons. KEY TAKEAWAY - AGE-ADJUSTED RATES IN TOWNS WITH FEWER THAN 10,000 PERSONS SHOW LITTLE IMPROVEMENT BETWEEN DDP AND V20200527 - SIMILAR DISTRIBUTIONS FOR TWO CATEGORIES, WORST DISTRIBUTION FOR ONE CATEGORY (2.5-5K), AND BETTER DISTRIBUTION FOR ONE CATEGORY (1-2.5K). V20200527 PERFORMS BETTER FOR LARGEST POPULATION CATEGORIES.     
 
-```{r ma_mcd_adjusted_perc_boxplot}
+```{r ma_mcd_adjusted_perc_boxplot, echo=FALSE, warning = FALSE, fig.cap= "Figure X. Boxplots of percent differences between age-adjusted asthma ED visit rates computed from SF1 and DDP (red) and from SF1 and v20200527 (blue) for Massacusetts towns. Towns were assigned to population bins using the invariant total population counts in SF1."}
+
+# colors 
+oct_color <- brewer.pal(3, "Set1")[1]
+july_color <- brewer.pal(3, "Set1")[2]
+
 ma_mcd_adjusted_perc %>%
   filter(var == "sf_denom_perc_diff_sf_v1" | var == "sf_denom_perc_diff_sf_v2") %>%
   ggplot(aes(x = pop_bin, y = value, color = var)) + 
   geom_boxplot() + 
-  scale_x_discrete(name="Total Population Bins (SF1)") +
+  scale_x_discrete(name="Total Population (SF1)") +
   ylab("Percent Difference (SF denominator)") + 
   scale_color_brewer(palette = "Set1") + 
   labs(caption = "Source: Van Riper et al. 2020; US Census Bureau 2019; Massachusetts Environmental Public Health Tracking Program 2010") +
-  ggtitle(paste("2010 SF1 vs. Diff. Private: Percent Difference in Age-Adjusted Asthma ED Visits (MA towns)")) + 
+#  ggtitle(paste("Figure X. Percent Difference in Age-Adjusted Asthma ED Visit Rates for MA Towns")) + 
   annotate("text", x = 0.85, y = 75, label = "DDP", color = oct_color, size = 2) +
   annotate("text", x = 1.30, y = 45, label = "v20200527", color = july_color, size = 2) +
   theme_bw() +
@@ -295,22 +325,3 @@ Box plot
 
 ## Discussion
 
-## R Markdown
-
-This is an R Markdown document. Markdown is a simple formatting syntax for authoring HTML, PDF, and MS Word documents. For more details on using R Markdown see <http://rmarkdown.rstudio.com>.
-
-When you click the **Knit** button a document will be generated that includes both content as well as the output of any embedded R code chunks within the document. You can embed an R code chunk like this:
-
-```{r cars}
-summary(cars)
-```
-
-## Including Plots
-
-You can also embed plots, for example:
-
-```{r pressure, echo=FALSE}
-plot(pressure)
-```
-
-Note that the `echo = FALSE` parameter was added to the code chunk to prevent printing of the R code that generated the plot.
